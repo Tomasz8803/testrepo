@@ -5,7 +5,7 @@ on:
   workflow_call:
     secrets: 
       ZENDESK_BASIC_AUTH:
-        description: 'test description'
+        description: 'Zendesk API'
         required: true
 jobs:
   issue_created:
