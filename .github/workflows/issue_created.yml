@@ -5,7 +5,7 @@ on:
   workflow_call:
     secrets: 
       ZENDESK_BASIC_AUTH:
-        description: dG9tYXN6LnNhZG93c2tpQHN0b3JkaXMuY29tL3Rva2VuOlFaZFdiMXYzbFcxOFVQYUw5U2xLbUJDWGNMT0NhUE9FaVlwSXhlV1I=
+        description: 'dG9tYXN6LnNhZG93c2tpQHN0b3JkaXMuY29tL3Rva2VuOlFaZFdiMXYzbFcxOFVQYUw5U2xLbUJDWGNMT0NhUE9FaVlwSXhlV1I='
         required: true
 jobs:
   issue_created:
