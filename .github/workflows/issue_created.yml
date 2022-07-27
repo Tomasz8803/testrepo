@@ -5,7 +5,7 @@ on:
   workflow_call:
     secrets: 
       ZENDESK_BASIC_AUTH:
-        description: 'tomasz.sadowski@stordis.com/token:QZdWb1v3lW18UPaL9SlKmBCXcLOCaPOEiYpIxeWR'
+        description: ''
         required: true
 jobs:
   issue_created:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - env:
-          ZENDESK_BASIC_AUTH: ${{ secrets.ZENDESK_BASIC_AUTH }}
+          ZENDESK_BASIC_AUTH: dG9tYXN6LnNhZG93c2tpQHN0b3JkaXMuY29tL3Rva2VuOlFaZFdiMXYzbFcxOFVQYUw5U2xLbUJDWGNMT0NhUE9FaVlwSXhlV1I=
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_USER: ${{ github.event.issue.user.login }}
