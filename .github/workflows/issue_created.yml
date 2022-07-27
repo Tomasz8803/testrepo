@@ -1,0 +1,41 @@
+# Will be run to create a zendesk ticket out of a issue
+on:
+  issues:
+    types: [opened]
+  workflow_call:
+    secrets: 
+      ZENDESK_BASIC_AUTH:
+        description: QZdWb1v3lW18UPaL9SlKmBCXcLOCaPOEiYpIxeWR
+        required: true
+jobs:
+  issue_created:
+    name: Issue created
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          ZENDESK_BASIC_AUTH: ${{ secrets.ZENDESK_BASIC_AUTH }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_USER: ${{ github.event.issue.user.login }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+        run: |
+          ## create ticket in zendesk
+          body=$(jq -n --arg body "$ISSUE_BODY" '{body: $body}' | jq .body)
+          echo "$body"
+
+          curl -X POST https://open2support.zendesk.com/api/v2/tickets -H "Authorization: Basic $ZENDESK_BASIC_AUTH" -H "Content-Type: application/json" --data-binary @- <<DATA
+          {
+            "ticket": {
+              "subject":   "Github_Issue: $ISSUE_TITLE",
+              "comment":   { "body": "[GITHUB_ISSUE_COMMENT]\n\n${body:1:-1}\n\nGITHUB ISSUE URL: $ISSUE_URL" },
+              "assignee_id": 383200172360,
+              "group_id": 360008131599,
+              "brand_id": 360002503940,
+              "tags": ["phrase"],
+              "external_id": "$ISSUE_URL",
+              "requester": { "locale_id": 1, "name": "$ISSUE_USER from Github", "email": "$ISSUE_USER@users.noreply.github.com" }
+            }
+          }
+          DATA
+
+          echo "Zendesk ticket created"
